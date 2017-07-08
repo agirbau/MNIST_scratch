@@ -75,18 +75,23 @@ class NeuralNetwork():
         adjustment = dot(inputs.T, errors * error_derivate)
         return adjustment
         #print error_derivate
-        #adjustment = dot()
 	
 if __name__=="__main__":
     #print "Hello world"
     # Initialize 1 neural network
     neural_network = NeuralNetwork()
     
-    #print "Random starting synaptic weights: "
-    #print neural_network.synaptic_weights
+    print "Random starting synaptic weights: "
+    print neural_network.synaptic_weights
     
     training_set_inputs = array([[0,0,1],[1,1,1],[1,0,1],[0,1,1]])
     training_set_outputs = array([[0,1,1,0]]).T
     n_iter = 2
     
     neural_network.train(training_set_inputs,training_set_outputs,n_iter)
+    
+    print "New synaptical weights"
+    print neural_network.synaptic_weights
+
+    test_input = array([[1,0,0]])
+    res = neural_network.think(test_input)
