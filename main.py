@@ -37,6 +37,8 @@ class NeuralNetwork():
     # Check this when backpropagating.
     def __sigmoid_derivative(self,x):
         sigmoid_derivative = x * (1-x)
+        #print x
+        #print x * (1-x)
         return sigmoid_derivative
         
     # Define the training of the network
@@ -50,9 +52,14 @@ class NeuralNetwork():
             # 2.Compute the error between the prediction and the real tag.
             # In this case we define the error as the difference between the output and the tag
             # (in some other applications the error consists on cross entropy or something like that)
-            error = training_set_outputs - outputs
+            errors = training_set_outputs - outputs
+            #print errors
             
             # 3.Backpropagate the error and adjust weights
+            adjustment = self.backpropagation(training_set_inputs,outputs,errors)
+            
+            # 4.Adjust the weights
+            self.synaptic_weights += adjustment
             
         
     # Pass inputs through the net (in this case, 1 neuron)
@@ -62,17 +69,24 @@ class NeuralNetwork():
         #print self.synaptic_weights
         #print dot(inputs,self.synaptic_weights)
         return activation
+    
+    def backpropagation(self,inputs,outputs,errors):
+        error_derivate = errors * self.__sigmoid_derivative(outputs)
+        adjustment = dot(inputs.T, errors * error_derivate)
+        return adjustment
+        #print error_derivate
+        #adjustment = dot()
 	
 if __name__=="__main__":
     #print "Hello world"
     # Initialize 1 neural network
     neural_network = NeuralNetwork()
     
-    print "Random starting synaptic weights: "
-    print neural_network.synaptic_weights
+    #print "Random starting synaptic weights: "
+    #print neural_network.synaptic_weights
     
     training_set_inputs = array([[0,0,1],[1,1,1],[1,0,1],[0,1,1]])
     training_set_outputs = array([[0,1,1,0]]).T
-    n_iter = 1
+    n_iter = 2
     
     neural_network.train(training_set_inputs,training_set_outputs,n_iter)
