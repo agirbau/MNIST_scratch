@@ -84,7 +84,73 @@ class NeuralNetwork():
         return adjustment
         #print error_derivate
 	
-if __name__=="__main__":
+class MultiLayerNeuralNetwork():
+	def __init__(self):
+		random.seed(1)
+		self.l1_synaptic_weights = 2 * random.random((3,1)) - 1 # 3 inputs
+		self.l2_synaptic_weights = 2 * random.random((1,1)) - 1 # 1 input from previous layer
+	
+	def __sigmoid(self,sum_inputs):
+		sigmoid = 1 / (1+exp(-sum_inputs))
+		return sigmoid
+	
+	def __sigmoid_derivative(self,x):
+		sigmoid_derivative = x * (1-x)
+		return sigmoid_derivative
+	
+	def think(self,input,weights):
+		sum_inputs = sum(dot(input,weights))
+		activations = self.__sigmoid(sum_inputs)
+		return activations
+	
+	def train(self,training_set_inputs,training_set_outputs,n_iter):
+	
+		for i in xrange(n_iter):
+			# 1.Forward propagation
+			# Sum weights * inputs
+			# sum_inputs_l1 = sum(dot(training_set_inputs, self.l1_synaptic_weights))			
+			# activations_l1 = self.__sigmoid(sum_inputs_l1)
+			# print "Activations old: "
+			# print activations_l1
+			
+			activations_l1 = self.think(training_set_inputs,self.l1_synaptic_weights)			
+			# print "Activations: "
+			# print activations_l1
+			
+			# sum_inputs_l2 = sum(dot(activations_l1, self.l2_synaptic_weights))
+			# activations_l2 = self.__sigmoid(sum_inputs_l2)
+			# print activations_l2
+			
+			activations_l2 = self.think(activations_l1,self.l2_synaptic_weights)
+			
+			
+			# 2.Error computation
+			error = training_set_outputs - activations_l2
+			print error
+			
+			# 3.Backpropagation
+			
+				# weight update 
+		
+	
+	
+if __name__ == "__main__":
+	neural_network = MultiLayerNeuralNetwork()
+	
+	print "Initial weights L1: "
+	print neural_network.l1_synaptic_weights
+	print "Initial weights L2: "
+	print neural_network.l2_synaptic_weights
+	
+	training_set_inputs = array([[0,0,1],[1,0,1],[1,1,1],[0,1,1]])
+	training_set_outputs = array([[0,1,1,0]]).T
+	print training_set_inputs
+	print training_set_outputs
+	
+	n_iter = 1
+	neural_network.train(training_set_inputs,training_set_outputs,n_iter)
+	
+if __name__=="__L1__": #__main__
     #print "Hello world"
     # Initialize 1 neural network
     neural_network = NeuralNetwork()
