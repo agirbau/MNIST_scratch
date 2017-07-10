@@ -102,6 +102,11 @@ class MultiLayerNeuralNetwork():
 		sum_inputs = sum(dot(input,weights))
 		activations = self.__sigmoid(sum_inputs)
 		return activations
+
+	def backpropagation(self,input,output,error):
+		der_out = self.__sigmoid_derivative(output) * error
+		adjustment = dot(input.T, der_out)
+		return adjustment
 	
 	def train(self,training_set_inputs,training_set_outputs,n_iter):
 	
@@ -129,8 +134,15 @@ class MultiLayerNeuralNetwork():
 			print error
 			
 			# 3.Backpropagation
+			print activations_l1
+			print activations_l2
+			adj_l1 = self.backpropagation(activations_l1,activations_l2,error)
+			print adj_l1
 			
-				# weight update 
+			adj = self.backpropagation(training_set_inputs,activations_l1,adj_l1)
+			# weight update
+			self.l2_synaptic_weights += adj_l1
+			self.l1_synaptic_weights += adj 
 		
 	
 	
